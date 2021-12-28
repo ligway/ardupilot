@@ -49,6 +49,7 @@
 #include "AP_RangeFinder_MSP.h"
 #include "AP_RangeFinder_USD1_CAN.h"
 #include "AP_RangeFinder_Benewake_CAN.h"
+#include "AP_RangeFinder_PYSITL.h"
 
 #include <AP_BoardConfig/AP_BoardConfig.h>
 #include <AP_Logger/AP_Logger.h>
@@ -584,10 +585,18 @@ void RangeFinder::detect_instance(uint8_t instance, uint8_t& serial_instance)
         _add_backend(new AP_RangeFinder_Benewake_CAN(state[instance], params[instance]), instance);
         break;
 #endif
+
+#if CONFIG_HAL_BOARD == HAL_BOARD_SITL
+    case Type::PYSITL:
+        _add_backend(new AP_RangeFinder_PYSITL(state[instance], params[instance]), instance);      
+        break;
+#endif
+
     case Type::NONE:
     default:
         break;
     }
+
 
     // if the backend has some local parameters then make those available in the tree
     if (drivers[instance] && state[instance].var_info) {

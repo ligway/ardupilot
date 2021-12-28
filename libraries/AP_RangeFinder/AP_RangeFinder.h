@@ -90,6 +90,7 @@ public:
         USD1_CAN = 33,
         Benewake_CAN = 34,
         SIM = 100,
+        PYSITL = 69,
     };
 
     enum class Function {
